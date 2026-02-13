@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Madras Biryani - Late Night Campus Cravings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            background-color: #000;
+        }
+
+        .logo-section {
+            background-color: #faf6ed;
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo-placeholder {
+            background-color: #f5f5dc;
+            padding: 30px 70px;
+            text-align: center;
+        }
+
+        .logo-placeholder h1 {
+            font-size: 28px;
+            color: #333;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .logo-placeholder h2 {
+            font-size: 18px;
+            color: #D4A853;
+            margin: 5px 0 0 0;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .logo-section img {
+            max-width: 350px;
+            height: auto;
+        }
+
+        .form-section {
+            background-color: #000;
+            padding: 35px 30px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .heading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            font-weight: normal;
+            color: #D4A853;
+            text-align: center;
+            margin-bottom: 35px;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(212, 168, 83, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .form-label svg {
+            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .address-field {
+            display: none;
+            margin-top: 12px;
+        }
+
+        .address-field.show {
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 16px 18px;
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            color: #999;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+            font-family: 'Arial', sans-serif;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        textarea:focus {
+            border-color: #444;
+        }
+
+        textarea::placeholder {
+            color: #666;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 16px 18px;
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            color: #999;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            border-color: #444;
+        }
+
+        input::placeholder,
+        select {
+            color: #666;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            background-size: 16px;
+            cursor: pointer;
+        }
+
+        select option {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .order-section {
+            margin-bottom: 22px;
+        }
+
+        .order-label {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 14px;
+            font-weight: 400;
+        }
+
+        .plate-type {
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+        }
+
+        .plate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .plate-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plate-name {
+            font-size: 15px;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .plate-price {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .qty-btn {
+            background: none;
+            border: 1px solid #3a3a3a;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            color: #FF6B35;
+            border-color: #FF6B35;
+        }
+
+        .qty-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .qty-display {
+            font-size: 18px;
+            color: #fff;
+            min-width: 25px;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .total-section {
+            background-color: #1a1a1a;
+            border: 2px solid #FF6B35;
+            border-radius: 10px;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .total-price {
+            font-size: 24px;
+            color: #FF6B35;
+            font-weight: bold;
+        }
+
+        .payment-section {
+            margin-bottom: 32px;
+        }
+
+        .payment-label {
+            font-size: 14px;
+            color: #fff;
+            margin-bottom: 14px;
+            font-weight: 400;
+        }
+
+        .payment-info {
+            background-color: #1a1a1a;
+            border: 2px solid #FF6B35;
+            border-radius: 10px;
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .payment-title {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .payment-subtitle {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 17px;
+            background-color: #FF6B35;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            text-transform: uppercase;
+        }
+
+        .place-order-btn:hover {
+            background-color: #ff7946;
+        }
+
+        .place-order-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-container {
+            background-color: #1a1a1a;
+            border: 2px solid #FF6B35;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            font-size: 22px;
+            color: #FF6B35;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-content {
+            color: #fff;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .modal-content p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .modal-content strong {
+            color: #D4A853;
+            font-weight: 500;
+        }
+
+        .modal-divider {
+            border: 0;
+            border-top: 1px solid #333;
+            margin: 15px 0;
+        }
+
+        .modal-order-items {
+            background-color: #0f0f0f;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .modal-total {
+            font-size: 18px;
+            color: #FF6B35;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .modal-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .modal-btn-confirm {
+            background-color: #FF6B35;
+            color: #fff;
+            position: relative;
+        }
+
+        .modal-btn-confirm:hover:not(:disabled) {
+            background-color: #ff7946;
+            transform: translateY(-2px);
+        }
+
+        .modal-btn-confirm:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .modal-btn-confirm.loading {
+            color: transparent;
+        }
+
+        .spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .modal-btn-confirm.loading .spinner {
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .modal-btn-cancel {
+            background-color: #2a2a2a;
+            color: #fff;
+        }
+
+        .modal-btn-cancel:hover:not(:disabled) {
+            background-color: #3a3a3a;
+        }
+
+        .modal-btn-ok {
+            background-color: #FF6B35;
+            color: #fff;
+        }
+
+        .modal-btn-ok:hover:not(:disabled) {
+            background-color: #ff7946;
+            transform: translateY(-2px);
+        }
+
+        .modal-success-icon {
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 520px) {
+            .form-section {
+                padding: 30px 20px;
+            }
+            
+            .logo-section {
+                padding: 30px 20px;
+            }
+            
+            .logo-section img {
+                max-width: 280px;
+            }
+
+            .modal-container {
+                padding: 25px 20px;
+                max-width: 95%;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container" id="modalContainer">
+            <div class="modal-header" id="modalHeader"></div>
+            <div class="modal-content" id="modalContent"></div>
+            <div class="modal-buttons" id="modalButtons"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="baner.png" alt="The Madras Biryani Logo">
+        </div>
+
+        <!-- Form Section -->
+        <div class="form-section">
+            <h1 class="heading">LATE NIGHT CAMPUS CRAVINGS</h1>
+
+            <form id="orderForm">
+                <!-- Name Field -->
+                <div class="form-group">
+                    <div class="form-label">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="#9b59b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="#9b59b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Your Name
+                    </div>
+                    <input type="text" id="name" placeholder="Enter your name" required>
+                </div>
+
+                <!-- Phone Number Field -->
+                <div class="form-group">
+                    <div class="form-label">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 16.92V19.92C22.0011 20.1985 21.9441 20.4741 21.8325 20.7293C21.7209 20.9845 21.5573 21.2136 21.3521 21.4018C21.1468 21.5901 20.9046 21.7335 20.6407 21.8227C20.3769 21.9119 20.0974 21.9451 19.82 21.92C16.7428 21.5856 13.7869 20.5341 11.19 18.85C8.77382 17.3146 6.72533 15.2661 5.18999 12.85C3.49997 10.2412 2.44824 7.27097 2.11999 4.17997C2.095 3.90344 2.12787 3.62474 2.21649 3.3616C2.30512 3.09846 2.44756 2.85666 2.63476 2.6516C2.82196 2.44653 3.0498 2.28268 3.30379 2.1705C3.55777 2.05831 3.83233 2.00024 4.10999 1.99997H7.10999C7.5953 1.9952 8.06579 2.16705 8.43376 2.48351C8.80173 2.79996 9.04207 3.23942 9.10999 3.71997C9.23662 4.68004 9.47144 5.6227 9.80999 6.52997C9.94454 6.8879 9.97366 7.27689 9.8939 7.65086C9.81415 8.02482 9.62886 8.36809 9.35999 8.63998L8.08999 9.90997C9.51355 12.4135 11.5864 14.4864 14.09 15.91L15.36 14.64C15.6319 14.3711 15.9751 14.1858 16.3491 14.1061C16.7231 14.0263 17.1121 14.0554 17.47 14.19C18.3773 14.5285 19.3199 14.7634 20.28 14.89C20.7658 14.9585 21.2094 15.2032 21.5265 15.5775C21.8437 15.9518 22.0122 16.4296 22 16.92Z" stroke="#9b59b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Phone Number
+                    </div>
+                    <input type="tel" id="phone" pattern="[0-9]{10}" maxlength="10" required placeholder="Enter mobile number">
+
+                </div>
+
+                <!-- Select Hostel / Address Field -->
+                <div class="form-group">
+                    <div class="form-label">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 10C21 17 12 23 12 23C12 23 3 17 3 10C3 7.61305 3.94821 5.32387 5.63604 3.63604C7.32387 1.94821 9.61305 1 12 1C14.3869 1 16.6761 1.94821 18.364 3.63604C20.0518 5.32387 21 7.61305 21 10Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="#e74c3c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Select Hostel / Address
+                    </div>
+                    <select id="hostel" required>
+                        <option value="" disabled selected>Choose your hostel</option>
+                        <option value="hostel1">Hostel 1</option>
+                        <option value="hostel2">Hostel 2</option>
+                        <option value="hostel3">Hostel 3</option>
+                        <option value="hostel4">Hostel 4</option>
+                        <option value="hostel5">Hostel 5</option>
+                        <option value="hostel6">Hostel 6</option>
+                        <option value="hostel7">Hostel 7</option>
+                        <option value="hostel8">Hostel 8</option>
+                        <option value="hostel9">Hostel 9</option>
+                        <option value="hostel10">Hostel 10</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="address-field" id="addressField">
+                        <textarea id="fullAddress" placeholder="Enter your full address (No, Street, City)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Order Section -->
+                <div class="order-section">
+                    <div class="order-label">Select Type & Quantity</div>
+                    
+                    <!-- Half Plate -->
+                    <div class="plate-type">
+                        <div class="plate-header">
+                            <div class="plate-info">
+                                <div class="plate-name">Half Plate</div>
+                                <div class="plate-price">₹150 per plate</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="qty-btn" id="decreaseHalf">−</button>
+                                <span class="qty-display" id="quantityHalf">0</span>
+                                <button type="button" class="qty-btn" id="increaseHalf">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Full Plate -->
+                    <div class="plate-type">
+                        <div class="plate-header">
+                            <div class="plate-info">
+                                <div class="plate-name">Full Plate</div>
+                                <div class="plate-price">₹280 per plate</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="qty-btn" id="decreaseFull">−</button>
+                                <span class="qty-display" id="quantityFull">0</span>
+                                <button type="button" class="qty-btn" id="increaseFull">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="total-section">
+                        <div class="total-label">Total Amount</div>
+                        <div class="total-price" id="totalPrice">₹0</div>
+                    </div>
+                </div>
+
+                <!-- Payment Method Section -->
+                <div class="payment-section">
+                    <div class="payment-label">Payment Method</div>
+                    
+                    <div class="payment-info">
+                        <div class="payment-title">Pay on Delivery</div>
+                        <div class="payment-subtitle">You can pay via Cash or QR Code</div>
+                    </div>
+                </div>
+
+                <!-- Place Order Button -->
+                <button type="submit" class="place-order-btn">PLACE ORDER</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalHeader = document.getElementById('modalHeader');
+        const modalContent = document.getElementById('modalContent');
+        const modalButtons = document.getElementById('modalButtons');
+
+        function showModal(header, content, buttons) {
+            modalHeader.textContent = header;
+            modalContent.innerHTML = content;
+            modalButtons.innerHTML = buttons;
+            modalOverlay.classList.add('show');
+        }
+
+        function hideModal() {
+            modalOverlay.classList.remove('show');
+        }
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                hideModal();
+            }
+        });
+
+        // Hostel/Address Toggle
+        const hostelSelect = document.getElementById('hostel');
+        const addressField = document.getElementById('addressField');
+        const fullAddressInput = document.getElementById('fullAddress');
+
+        hostelSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                addressField.classList.add('show');
+                fullAddressInput.required = true;
+            } else {
+                addressField.classList.remove('show');
+                fullAddressInput.required = false;
+                fullAddressInput.value = '';
+            }
+        });
+
+        // Quantity Control for Half and Full Plates
+        let quantityHalf = 0;
+        let quantityFull = 0;
+        const priceHalf = 150;
+        const priceFull = 280;
+
+        const quantityHalfDisplay = document.getElementById('quantityHalf');
+        const quantityFullDisplay = document.getElementById('quantityFull');
+        const totalPriceDisplay = document.getElementById('totalPrice');
+        
+        const decreaseHalfBtn = document.getElementById('decreaseHalf');
+        const increaseHalfBtn = document.getElementById('increaseHalf');
+        const decreaseFullBtn = document.getElementById('decreaseFull');
+        const increaseFullBtn = document.getElementById('increaseFull');
+
+        function updateTotalPrice() {
+            const total = (quantityHalf * priceHalf) + (quantityFull * priceFull);
+            totalPriceDisplay.textContent = `₹${total}`;
+            
+            // Update button states
+            decreaseHalfBtn.disabled = quantityHalf === 0;
+            decreaseFullBtn.disabled = quantityFull === 0;
+        }
+
+        // Half Plate Controls
+        decreaseHalfBtn.addEventListener('click', () => {
+            if (quantityHalf > 0) {
+                quantityHalf--;
+                quantityHalfDisplay.textContent = quantityHalf;
+                updateTotalPrice();
+            }
+        });
+
+        increaseHalfBtn.addEventListener('click', () => {
+            quantityHalf++;
+            quantityHalfDisplay.textContent = quantityHalf;
+            updateTotalPrice();
+        });
+
+        // Full Plate Controls
+        decreaseFullBtn.addEventListener('click', () => {
+            if (quantityFull > 0) {
+                quantityFull--;
+                quantityFullDisplay.textContent = quantityFull;
+                updateTotalPrice();
+            }
+        });
+
+        increaseFullBtn.addEventListener('click', () => {
+            quantityFull++;
+            quantityFullDisplay.textContent = quantityFull;
+            updateTotalPrice();
+        });
+
+        // Initialize button states
+        updateTotalPrice();
+
+        // Form Submission
+        const orderForm = document.getElementById('orderForm');
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Validate at least one item is selected
+            if (quantityHalf === 0 && quantityFull === 0) {
+                const warningContent = `
+                    <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">⚠️</p>
+                    <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
+                        No items selected!
+                    </p>
+                    <p style="text-align: center; color: #999;">
+                        Please select at least one item (Half Plate or Full Plate) to continue.
+                    </p>
+                `;
+                const warningButtons = `
+                    <button class="modal-btn modal-btn-ok" onclick="hideModal()" style="width: 100%;">OK</button>
+                `;
+                showModal('Order Selection Required', warningContent, warningButtons);
+                return;
+            }
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const hostel = document.getElementById('hostel').value;
+            const fullAddress = document.getElementById('fullAddress').value;
+            const totalPrice = (quantityHalf * priceHalf) + (quantityFull * priceFull);
+
+            // Determine delivery location
+            const deliveryLocation = hostel === 'other' ? fullAddress : hostel;
+
+            // Build confirmation content
+            let orderItemsHTML = '';
+            if (quantityHalf > 0) {
+                orderItemsHTML += `<p>Half Plate × ${quantityHalf} = ₹${quantityHalf * priceHalf}</p>`;
+            }
+            if (quantityFull > 0) {
+                orderItemsHTML += `<p>Full Plate × ${quantityFull} = ₹${quantityFull * priceFull}</p>`;
+            }
+
+            const confirmContent = `
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+                <p><strong>Delivery Location:</strong> ${deliveryLocation}</p>
+                <hr class="modal-divider">
+                <p><strong>Order Details:</strong></p>
+                <div class="modal-order-items">
+                    ${orderItemsHTML}
+                </div>
+                <div class="modal-total">Total: ₹${totalPrice}</div>
+                <p><strong>Payment:</strong> Pay on Delivery (Cash or QR Code)</p>
+            `;
+
+            const confirmButtons = `
+                <button class="modal-btn modal-btn-cancel" onclick="hideModal()" id="cancelBtn">Cancel</button>
+                <button class="modal-btn modal-btn-confirm" onclick="confirmOrder()" id="confirmBtn">
+                    Confirm Order
+                    <span class="spinner"></span>
+                </button>
+            `;
+
+            // Show confirmation modal
+            showModal('Confirm Your Order', confirmContent, confirmButtons);
+        });
+
+        // Confirm Order Function
+        function confirmOrder() {
+                // Get button elements
+                const confirmBtn = document.getElementById('confirmBtn');
+                const cancelBtn = document.getElementById('cancelBtn');
+                
+                // Disable buttons and show loading
+                confirmBtn.disabled = true;
+                confirmBtn.classList.add('loading');
+                cancelBtn.disabled = true;
+                
+                const name = document.getElementById('name').value;
+                const phone = document.getElementById('phone').value;
+                const hostel = document.getElementById('hostel').value;
+                const fullAddress = document.getElementById('fullAddress').value;
+
+                const location = hostel === 'other' ? fullAddress : hostel;
+
+                const totalPrice = (quantityHalf * priceHalf) + (quantityFull * priceFull);
+
+                const orderData = {
+                    name: name,
+                    phone: phone,
+                    location: location,
+                    halfQty: quantityHalf,
+                    fullQty: quantityFull,
+                    total: totalPrice
+                };
+
+                fetch("https://script.google.com/macros/s/AKfycbwx0KGs9ZQg1xDaS9dRf3P-LoHZFievL1YUb_kSd7qtF6okeLPZ1A8pUFsFtW9LT8If/exec", {
+                    method: "POST",
+                    body: JSON.stringify(orderData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showSuccessModal(totalPrice);
+                })
+                .catch(error => {
+                    // Re-enable buttons on error
+                    confirmBtn.disabled = false;
+                    confirmBtn.classList.remove('loading');
+                    cancelBtn.disabled = false;
+                    
+                    const errorContent = `
+                        <p style="text-align: center; font-size: 16px; color: #ff6b6b; margin-bottom: 15px;">
+                            ❌ Order failed!
+                        </p>
+                        <p style="text-align: center; color: #999;">
+                            Please try again or contact us if the problem persists.
+                        </p>
+                    `;
+                    const errorButtons = `
+                        <button class="modal-btn modal-btn-ok" onclick="hideModal()">OK</button>
+                    `;
+                    showModal('Error', errorContent, errorButtons);
+                });
+            }
+        function showSuccessModal(totalPrice) {
+            const successContent = `
+                <div class="modal-success-icon">✓</div>
+                <p style="text-align: center; font-size: 16px; margin-bottom: 15px;">
+                Your order has been placed successfully!
+                </p>
+                <p style="text-align: center; color: #999;">
+                We will deliver it soon.
+                </p>
+                <div class="modal-total">Order Total: ₹${totalPrice}</div>
+                <p style="text-align: center; margin-top: 15px;">
+                Thank you for ordering from The Madras Biryani!
+                </p>
+            `;
+
+            const successButtons = `
+                <button class="modal-btn modal-btn-ok"
+                onclick="hideModal(); location.reload();">
+                OK
+                </button>
+            `;
+
+            showModal('Order Confirmed!', successContent, successButtons);
+           }
+
+
+    </script>
+</body>
+</html>
