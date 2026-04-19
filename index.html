@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Madras Biryani - Late Night Campus Cravings</title>
+    <!-- Add html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -189,7 +191,38 @@
             border: 1px solid #2a2a2a;
             border-radius: 10px;
             padding: 16px 20px;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .plate-image-container {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .plate-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .plate-image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .plate-title {
+            font-size: 18px;
+            color: #D4A853;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2a2a2a;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
         .plate-header {
@@ -615,9 +648,8 @@
                         <option value="GH-8">GH-8</option>
                         <option value="GH-9">GH-9</option>
                         <option value="GH-10">GH-10</option>
-                        <option value="Maharana Pratap Hostel">Maharana Pratap Hostel</option>
+                        <option value="Maharana Pratap Hostel"></option>
                         <option value="other">Other</option>
-                       
                     </select>
                     <div class="address-field" id="addressField">
                         <textarea id="fullAddress" placeholder="Enter your full address (No, Street, City)"></textarea>
@@ -628,32 +660,62 @@
                 <div class="order-section">
                     <div class="order-label">Select Type & Quantity</div>
                     
-                    <!-- Half Plate -->
+                    <!-- Chicken Biryani -->
                     <div class="plate-type">
+                        <div class="plate-image-container">
+                            <img src="chicken.png" alt="Chicken Biryani">
+                        </div>
+                        <div class="plate-title">CHICKEN BIRYANI</div>
                         <div class="plate-header">
                             <div class="plate-info">
-                                <div class="plate-name">Half Plate</div>
+                                <div class="plate-name">Half Plate (500g)</div>
                                 <div class="plate-price">₹150 per plate</div>
                             </div>
                             <div class="quantity-control">
-                                <button type="button" class="qty-btn" id="decreaseHalf">−</button>
-                                <span class="qty-display" id="quantityHalf">0</span>
-                                <button type="button" class="qty-btn" id="increaseHalf">+</button>
+                                <button type="button" class="qty-btn" id="decreaseChickenHalf">−</button>
+                                <span class="qty-display" id="qtyChickenHalf">0</span>
+                                <button type="button" class="qty-btn" id="increaseChickenHalf">+</button>
+                            </div>
+                        </div>
+                        <div class="plate-header" style="margin-bottom: 0;">
+                            <div class="plate-info">
+                                <div class="plate-name">Full Plate (1kg)</div>
+                                <div class="plate-price">₹270 per plate</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="qty-btn" id="decreaseChickenFull">−</button>
+                                <span class="qty-display" id="qtyChickenFull">0</span>
+                                <button type="button" class="qty-btn" id="increaseChickenFull">+</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Full Plate -->
+                    <!-- Paneer Biryani -->
                     <div class="plate-type">
+                        <div class="plate-image-container">
+                            <img src="panner.png" alt="Paneer Biryani">
+                        </div>
+                        <div class="plate-title">PANEER BIRYANI</div>
                         <div class="plate-header">
                             <div class="plate-info">
-                                <div class="plate-name">Full Plate</div>
-                                <div class="plate-price">₹280 per plate</div>
+                                <div class="plate-name">Half Plate (500g)</div>
+                                <div class="plate-price">₹120 per plate</div>
                             </div>
                             <div class="quantity-control">
-                                <button type="button" class="qty-btn" id="decreaseFull">−</button>
-                                <span class="qty-display" id="quantityFull">0</span>
-                                <button type="button" class="qty-btn" id="increaseFull">+</button>
+                                <button type="button" class="qty-btn" id="decreasePaneerHalf">−</button>
+                                <span class="qty-display" id="qtyPaneerHalf">0</span>
+                                <button type="button" class="qty-btn" id="increasePaneerHalf">+</button>
+                            </div>
+                        </div>
+                        <div class="plate-header" style="margin-bottom: 0;">
+                            <div class="plate-info">
+                                <div class="plate-name">Full Plate (1kg)</div>
+                                <div class="plate-price">₹200 per plate</div>
+                            </div>
+                            <div class="quantity-control">
+                                <button type="button" class="qty-btn" id="decreasePaneerFull">−</button>
+                                <span class="qty-display" id="qtyPaneerFull">0</span>
+                                <button type="button" class="qty-btn" id="increasePaneerFull">+</button>
                             </div>
                         </div>
                     </div>
@@ -714,57 +776,105 @@
             }
         });
 
-        // Quantity Control for Half and Full Plates
-        let quantityHalf = 0;
-        let quantityFull = 0;
-        const priceHalf = 150;
-        const priceFull = 280;
+        // Quantity Control for Plates
+        let qtyChickenHalf = 0;
+        let qtyChickenFull = 0;
+        let qtyPaneerHalf = 0;
+        let qtyPaneerFull = 0;
+        
+        const priceChickenHalf = 150;
+        const priceChickenFull = 270;
+        const pricePaneerHalf = 120;
+        const pricePaneerFull = 200;
 
-        const quantityHalfDisplay = document.getElementById('quantityHalf');
-        const quantityFullDisplay = document.getElementById('quantityFull');
+        const qtyChickenHalfDisplay = document.getElementById('qtyChickenHalf');
+        const qtyChickenFullDisplay = document.getElementById('qtyChickenFull');
+        const qtyPaneerHalfDisplay = document.getElementById('qtyPaneerHalf');
+        const qtyPaneerFullDisplay = document.getElementById('qtyPaneerFull');
+        
         const totalPriceDisplay = document.getElementById('totalPrice');
         
-        const decreaseHalfBtn = document.getElementById('decreaseHalf');
-        const increaseHalfBtn = document.getElementById('increaseHalf');
-        const decreaseFullBtn = document.getElementById('decreaseFull');
-        const increaseFullBtn = document.getElementById('increaseFull');
+        const decreaseChickenHalfBtn = document.getElementById('decreaseChickenHalf');
+        const increaseChickenHalfBtn = document.getElementById('increaseChickenHalf');
+        const decreaseChickenFullBtn = document.getElementById('decreaseChickenFull');
+        const increaseChickenFullBtn = document.getElementById('increaseChickenFull');
+        
+        const decreasePaneerHalfBtn = document.getElementById('decreasePaneerHalf');
+        const increasePaneerHalfBtn = document.getElementById('increasePaneerHalf');
+        const decreasePaneerFullBtn = document.getElementById('decreasePaneerFull');
+        const increasePaneerFullBtn = document.getElementById('increasePaneerFull');
 
         function updateTotalPrice() {
-            const total = (quantityHalf * priceHalf) + (quantityFull * priceFull);
+            const total = (qtyChickenHalf * priceChickenHalf) + 
+                          (qtyChickenFull * priceChickenFull) + 
+                          (qtyPaneerHalf * pricePaneerHalf) + 
+                          (qtyPaneerFull * pricePaneerFull);
             totalPriceDisplay.textContent = `₹${total}`;
             
             // Update button states
-            decreaseHalfBtn.disabled = quantityHalf === 0;
-            decreaseFullBtn.disabled = quantityFull === 0;
+            decreaseChickenHalfBtn.disabled = qtyChickenHalf === 0;
+            decreaseChickenFullBtn.disabled = qtyChickenFull === 0;
+            decreasePaneerHalfBtn.disabled = qtyPaneerHalf === 0;
+            decreasePaneerFullBtn.disabled = qtyPaneerFull === 0;
         }
 
-        // Half Plate Controls
-        decreaseHalfBtn.addEventListener('click', () => {
-            if (quantityHalf > 0) {
-                quantityHalf--;
-                quantityHalfDisplay.textContent = quantityHalf;
+        // Chicken Half Plate Controls
+        decreaseChickenHalfBtn.addEventListener('click', () => {
+            if (qtyChickenHalf > 0) {
+                qtyChickenHalf--;
+                qtyChickenHalfDisplay.textContent = qtyChickenHalf;
                 updateTotalPrice();
             }
         });
 
-        increaseHalfBtn.addEventListener('click', () => {
-            quantityHalf++;
-            quantityHalfDisplay.textContent = quantityHalf;
+        increaseChickenHalfBtn.addEventListener('click', () => {
+            qtyChickenHalf++;
+            qtyChickenHalfDisplay.textContent = qtyChickenHalf;
             updateTotalPrice();
         });
 
-        // Full Plate Controls
-        decreaseFullBtn.addEventListener('click', () => {
-            if (quantityFull > 0) {
-                quantityFull--;
-                quantityFullDisplay.textContent = quantityFull;
+        // Chicken Full Plate Controls
+        decreaseChickenFullBtn.addEventListener('click', () => {
+            if (qtyChickenFull > 0) {
+                qtyChickenFull--;
+                qtyChickenFullDisplay.textContent = qtyChickenFull;
                 updateTotalPrice();
             }
         });
 
-        increaseFullBtn.addEventListener('click', () => {
-            quantityFull++;
-            quantityFullDisplay.textContent = quantityFull;
+        increaseChickenFullBtn.addEventListener('click', () => {
+            qtyChickenFull++;
+            qtyChickenFullDisplay.textContent = qtyChickenFull;
+            updateTotalPrice();
+        });
+
+        // Paneer Half Plate Controls
+        decreasePaneerHalfBtn.addEventListener('click', () => {
+            if (qtyPaneerHalf > 0) {
+                qtyPaneerHalf--;
+                qtyPaneerHalfDisplay.textContent = qtyPaneerHalf;
+                updateTotalPrice();
+            }
+        });
+
+        increasePaneerHalfBtn.addEventListener('click', () => {
+            qtyPaneerHalf++;
+            qtyPaneerHalfDisplay.textContent = qtyPaneerHalf;
+            updateTotalPrice();
+        });
+
+        // Paneer Full Plate Controls
+        decreasePaneerFullBtn.addEventListener('click', () => {
+            if (qtyPaneerFull > 0) {
+                qtyPaneerFull--;
+                qtyPaneerFullDisplay.textContent = qtyPaneerFull;
+                updateTotalPrice();
+            }
+        });
+
+        increasePaneerFullBtn.addEventListener('click', () => {
+            qtyPaneerFull++;
+            qtyPaneerFullDisplay.textContent = qtyPaneerFull;
             updateTotalPrice();
         });
 
@@ -777,14 +887,14 @@
             e.preventDefault();
 
             // Validate at least one item is selected
-            if (quantityHalf === 0 && quantityFull === 0) {
+            if (qtyChickenHalf === 0 && qtyChickenFull === 0 && qtyPaneerHalf === 0 && qtyPaneerFull === 0) {
                 const warningContent = `
                     <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">⚠️</p>
                     <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
                         No items selected!
                     </p>
                     <p style="text-align: center; color: #999;">
-                        Please select at least one item (Half Plate or Full Plate) to continue.
+                        Please select at least one item to continue.
                     </p>
                 `;
                 const warningButtons = `
@@ -798,19 +908,20 @@
             const phone = document.getElementById('phone').value;
             const hostel = document.getElementById('hostel').value;
             const fullAddress = document.getElementById('fullAddress').value;
-            const totalPrice = (quantityHalf * priceHalf) + (quantityFull * priceFull);
+            const totalPrice = (qtyChickenHalf * priceChickenHalf) + 
+                               (qtyChickenFull * priceChickenFull) + 
+                               (qtyPaneerHalf * pricePaneerHalf) + 
+                               (qtyPaneerFull * pricePaneerFull);
 
             // Determine delivery location
             const deliveryLocation = hostel === 'other' ? fullAddress : hostel;
 
             // Build confirmation content
             let orderItemsHTML = '';
-            if (quantityHalf > 0) {
-                orderItemsHTML += `<p>Half Plate × ${quantityHalf} = ₹${quantityHalf * priceHalf}</p>`;
-            }
-            if (quantityFull > 0) {
-                orderItemsHTML += `<p>Full Plate × ${quantityFull} = ₹${quantityFull * priceFull}</p>`;
-            }
+            if (qtyChickenHalf > 0) orderItemsHTML += `<p>Chicken Biryani Half Plate × ${qtyChickenHalf} = ₹${qtyChickenHalf * priceChickenHalf}</p>`;
+            if (qtyChickenFull > 0) orderItemsHTML += `<p>Chicken Biryani Full Plate × ${qtyChickenFull} = ₹${qtyChickenFull * priceChickenFull}</p>`;
+            if (qtyPaneerHalf > 0) orderItemsHTML += `<p>Paneer Biryani Half Plate × ${qtyPaneerHalf} = ₹${qtyPaneerHalf * pricePaneerHalf}</p>`;
+            if (qtyPaneerFull > 0) orderItemsHTML += `<p>Paneer Biryani Full Plate × ${qtyPaneerFull} = ₹${qtyPaneerFull * pricePaneerFull}</p>`;
 
             const confirmContent = `
                 <p><strong>Name:</strong> ${name}</p>
@@ -822,7 +933,7 @@
                     ${orderItemsHTML}
                 </div>
                 <div class="modal-total">Total: ₹${totalPrice}</div>
-                <p><strong>Payment:</strong> Pay on Delivery (Cash or QR Code)</p>
+                <p><strong>Payment:</strong> Pay on Delivery  (Cash or QR Code)</p>
             `;
 
             const confirmButtons = `
@@ -855,18 +966,24 @@
 
                 const location = hostel === 'other' ? fullAddress : hostel;
 
-                const totalPrice = (quantityHalf * priceHalf) + (quantityFull * priceFull);
+                const totalPrice = (qtyChickenHalf * priceChickenHalf) + 
+                                   (qtyChickenFull * priceChickenFull) + 
+                                   (qtyPaneerHalf * pricePaneerHalf) + 
+                                   (qtyPaneerFull * pricePaneerFull);
 
                 const orderData = {
                     name: name,
                     phone: phone,
                     location: location,
-                    halfQty: quantityHalf,
-                    fullQty: quantityFull,
+                    chickenHalfQty: qtyChickenHalf,
+                    chickenFullQty: qtyChickenFull,
+                    paneerHalfQty: qtyPaneerHalf,
+                    paneerFullQty: qtyPaneerFull,
                     total: totalPrice
                 };
 
-                fetch("https://script.google.com/macros/s/AKfycbwx0KGs9ZQg1xDaS9dRf3P-LoHZFievL1YUb_kSd7qtF6okeLPZ1A8pUFsFtW9LT8If/exec", {
+                // IMPORTANT: Replace the URL below with your NEW deployment URL
+                fetch("https://script.google.com/macros/s/AKfycbyqQhPiXI0w1fqdAMo6qul98ExnRKF1lk9zOms7S2JrmqoK1x5Q2oOUCn2buPgVTqAn/exec", {
                     method: "POST",
                     body: JSON.stringify(orderData),
                 })
@@ -894,7 +1011,129 @@
                     showModal('Error', errorContent, errorButtons);
                 });
             }
+
+                function downloadReceipt(orderData) {
+            if (!orderData) return Promise.resolve();
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ unit: 'mm', format: 'a5', orientation: 'portrait' });
+
+            const pageW = doc.internal.pageSize.getWidth();
+            const margin = 15;
+            const contentW = pageW - margin * 2;
+            let y = 20;
+
+            const line = () => {
+                doc.setDrawColor(200);
+                doc.setLineDash([2, 2]);
+                doc.line(margin, y, pageW - margin, y);
+                doc.setLineDash([]);
+                y += 6;
+            };
+
+            // Header
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(212, 168, 83);
+            doc.text('THE MADRAS BIRYANI', pageW / 2, y, { align: 'center' });
+            y += 7;
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(120, 120, 120);
+            doc.text('Late Night Campus Cravings', pageW / 2, y, { align: 'center' });
+            y += 8;
+
+            line();
+
+            // Customer details
+            doc.setFontSize(11);
+            doc.setTextColor(0, 0, 0);
+            const details = [
+                ['Name', orderData.name],
+                ['Phone', orderData.phone],
+                ['Location', orderData.location],
+                ['Date', new Date().toLocaleString()]
+            ];
+
+            details.forEach(([label, value]) => {
+                doc.setFont('helvetica', 'bold');
+                doc.text(label + ':', margin, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(String(value), margin + 28, y);
+                y += 7;
+            });
+
+            y += 2;
+            line();
+
+            // Order items
+            doc.setFont('helvetica', 'bold');
+            doc.text('Order Details:', margin, y);
+            y += 8;
+
+            doc.setFont('helvetica', 'normal');
+            const items = [
+                [orderData.chickenHalfQty, 'Chicken Biryani Half Plate', 150],
+                [orderData.chickenFullQty, 'Chicken Biryani Full Plate', 270],
+                [orderData.paneerHalfQty, 'Paneer Biryani Half Plate', 120],
+                [orderData.paneerFullQty, 'Paneer Biryani Full Plate', 200],
+            ];
+
+            items.forEach(([qty, name, price]) => {
+                if (qty > 0) {
+                    doc.text(`${name} x${qty}`, margin, y);
+                    doc.text(`Rs.${qty * price}`, pageW - margin, y, { align: 'right' });
+                    y += 7;
+                }
+            });
+
+            y += 2;
+            line();
+
+            // Total
+            doc.setFontSize(13);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(255, 107, 53);
+            doc.text('Total:', margin, y);
+            doc.text(`Rs.${orderData.total}`, pageW - margin, y, { align: 'right' });
+            y += 10;
+
+            // Payment note
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(120, 120, 120);
+            doc.text('Payment: Pay on Delivery (Cash or QR Code)', pageW / 2, y, { align: 'center' });
+            y += 12;
+
+            // Footer
+            doc.setTextColor(150, 150, 150);
+            doc.text('Thank you for your order!', pageW / 2, y, { align: 'center' });
+
+            doc.save('MadrasBiryani_Receipt.pdf');
+            receiptDownloaded = true;
+            return Promise.resolve();
+        }
+
+        let currentOrderData = null;
+        let receiptDownloaded = false;
+        let receiptGenerating = false;
+
         function showSuccessModal(totalPrice) {
+            // Re-fetch form data to pass to receipt
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const hostel = document.getElementById('hostel').value;
+            const fullAddress = document.getElementById('fullAddress').value;
+            const location = hostel === 'other' ? fullAddress : hostel;
+            
+            currentOrderData = {
+                name, phone, location, total: totalPrice,
+                chickenHalfQty: qtyChickenHalf, chickenFullQty: qtyChickenFull,
+                paneerHalfQty: qtyPaneerHalf, paneerFullQty: qtyPaneerFull
+            };
+            receiptDownloaded = false; // Reset on new order
+
             const successContent = `
                 <div class="modal-success-icon">✓</div>
                 <p style="text-align: center; font-size: 16px; margin-bottom: 15px;">
@@ -910,19 +1149,44 @@
             `;
 
             const successButtons = `
-                <button class="modal-btn modal-btn-ok"
-                onclick="hideModal(); location.reload();">
-                OK
-                </button>
+                <div style="display: flex; flex-direction: column; width: 100%; gap: 10px;">
+                    <button class="modal-btn modal-btn-ok" style="width: 100%; margin-bottom: 0;"
+                    onclick="handleModalCloseAndDownload();">
+                    OK
+                    </button>
+                    <button class="modal-btn" style="width: 100%; background-color: #2a2a2a; color: #fff;" onclick="downloadReceipt(currentOrderData)">
+                        Download Receipt (PDF)
+                    </button>
+                </div>
             `;
 
             showModal('Order Confirmed!', successContent, successButtons);
-           }
+        }
+
+        async function handleModalCloseAndDownload() {
+            const okBtn = document.querySelector('.modal-btn-ok');
+            if (okBtn) {
+                okBtn.disabled = true;
+                okBtn.textContent = 'Preparing Receipt...';
+            }
+
+            if (currentOrderData && !receiptDownloaded) {
+                try {
+                    await downloadReceipt(currentOrderData);
+                } catch (error) {
+                    if (okBtn) {
+                        okBtn.disabled = false;
+                        okBtn.textContent = 'OK';
+                    }
+                    return;
+                }
+            }
+
+            hideModal();
+            setTimeout(() => { location.reload(); }, 400);
+        }
 
 
     </script>
 </body>
 </html>
-
-
-
