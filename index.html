@@ -892,15 +892,15 @@
             const istTime = new Date(utcTime + (3600000 * 5.5));
             const hour = istTime.getHours();
 
-            // TESTING: Closed if before 7:00 PM (19) or at/after 9:00 PM (21). Allowed ONLY 19:00 - 20:59.
-            if (hour < 19 || hour >= 21) {
+            // Closed from 2:00 AM (hour 2) to 6:59 PM (hour 18). Allowed 19:00 - 01:59.
+            if (hour >= 2 && hour < 19) {
                 const closedContent = `
                     <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">🕒</p>
                     <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
                         Shop is currently closed!
                     </p>
                     <p style="text-align: center; color: #999;">
-                        Orders are only accepted between 7:00 PM and 9:00 PM.
+                        Orders are only accepted between 7:00 PM and 2:00 AM.
                     </p>
                 `;
                 const closedButtons = `
