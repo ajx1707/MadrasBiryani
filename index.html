@@ -886,6 +886,30 @@
         orderForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
+            // Check Indian Standard Time (UTC+5:30)
+            const now = new Date();
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const istTime = new Date(utcTime + (3600000 * 5.5));
+            const hour = istTime.getHours();
+
+            // TESTING: Closed if before 7:00 PM (19) or at/after 9:00 PM (21). Allowed ONLY 19:00 - 20:59.
+            if (hour < 19 || hour >= 21) {
+                const closedContent = `
+                    <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">🕒</p>
+                    <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
+                        Shop is currently closed!
+                    </p>
+                    <p style="text-align: center; color: #999;">
+                        Orders are only accepted between 7:00 PM and 9:00 PM.
+                    </p>
+                `;
+                const closedButtons = `
+                    <button class="modal-btn modal-btn-ok" onclick="hideModal()" style="width: 100%;">OK</button>
+                `;
+                showModal('Outside Order Hours', closedContent, closedButtons);
+                return; // Stop form submission
+            }
+
             // Validate at least one item is selected
             if (qtyChickenHalf === 0 && qtyChickenFull === 0 && qtyPaneerHalf === 0 && qtyPaneerFull === 0) {
                 const warningContent = `
