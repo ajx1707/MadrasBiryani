@@ -898,6 +898,21 @@
                     if (data.status && data.status.toString().toUpperCase().trim() === "CLOSED") {
                         isShopManuallyClosed = true;
                         placeOrderBtn.textContent = 'SHOP CLOSED TODAY';
+                        // Re-enable so the user can click it to see the closed modal
+                        placeOrderBtn.disabled = false;
+                        placeOrderBtn.style.opacity = '0.8';
+                        
+                        // Show the popup immediately on load
+                        const closedContent = `
+                            <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">🔒</p>
+                            <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
+                                Shop is closed today!
+                            </p>
+                            <p style="text-align: center; color: #999;">
+                                We are not taking orders at the moment. Please check back later.
+                            </p>
+                        `;
+                        showModal('Currently Closed', closedContent, `<button class="modal-btn modal-btn-ok" onclick="hideModal()" style="width: 100%;">OK</button>`);
                     } else {
                         placeOrderBtn.disabled = false;
                         placeOrderBtn.style.opacity = '1';
