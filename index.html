@@ -881,10 +881,55 @@
         // Initialize button states
         updateTotalPrice();
 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRiN9uT5AXva1Y90e4nG6faLb_hnM9qKcxX2CpDF5bq1ANW-H5xesutSjYzY1sZhXC/exec";
+        
+        // Check shop status from Google Sheet on page load
+        let isShopManuallyClosed = false;
+        window.addEventListener('DOMContentLoaded', () => {
+            const placeOrderBtn = document.querySelector('.place-order-btn');
+            const originalText = placeOrderBtn.textContent;
+            placeOrderBtn.disabled = true;
+            placeOrderBtn.style.opacity = '0.5';
+            placeOrderBtn.textContent = 'CHECKING STATUS...';
+
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status && data.status.toString().toUpperCase().trim() === "CLOSED") {
+                        isShopManuallyClosed = true;
+                        placeOrderBtn.textContent = 'SHOP CLOSED TODAY';
+                    } else {
+                        placeOrderBtn.disabled = false;
+                        placeOrderBtn.style.opacity = '1';
+                        placeOrderBtn.textContent = originalText;
+                    }
+                })
+                .catch(err => {
+                    // If check fails, enable button anyway so it doesn't block orders by mistake
+                    placeOrderBtn.disabled = false;
+                    placeOrderBtn.style.opacity = '1';
+                    placeOrderBtn.textContent = originalText;
+                });
+        });
+
         // Form Submission
         const orderForm = document.getElementById('orderForm');
         orderForm.addEventListener('submit', (e) => {
             e.preventDefault();
+
+            if (isShopManuallyClosed) {
+                const closedContent = `
+                    <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">🔒</p>
+                    <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
+                        Shop is closed today!
+                    </p>
+                    <p style="text-align: center; color: #999;">
+                        We are not taking orders at the moment. Please check back later.
+                    </p>
+                `;
+                showModal('Currently Closed', closedContent, `<button class="modal-btn modal-btn-ok" onclick="hideModal()" style="width: 100%;">OK</button>`);
+                return;
+            }
 
             // Check Indian Standard Time (UTC+5:30)
             const now = new Date();
@@ -1006,8 +1051,8 @@
                     total: totalPrice
                 };
 
-                // IMPORTANT: Replace the URL below with your NEW deployment URL
-                fetch("https://script.google.com/macros/s/AKfycbxrWG9rdDGjOcEEdfrQxrF81kxH2we6CmqeGYDkt2-ahHYzV6LqhifZkw_LrL29kJFq/exec", {
+                // Use the shared SCRIPT_URL defined earlier
+                fetch(SCRIPT_URL, {
                     method: "POST",
                     body: JSON.stringify(orderData),
                 })
