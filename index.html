@@ -690,36 +690,6 @@
                         </div>
                     </div>
 
-                    <!-- Paneer Biryani -->
-                    <div class="plate-type">
-                        <div class="plate-image-container">
-                            <img src="panner.png" alt="Paneer Biryani">
-                        </div>
-                        <div class="plate-title">PANEER BIRYANI</div>
-                        <div class="plate-header">
-                            <div class="plate-info">
-                                <div class="plate-name">Half Plate (500g)</div>
-                                <div class="plate-price">₹120 per plate</div>
-                            </div>
-                            <div class="quantity-control">
-                                <button type="button" class="qty-btn" id="decreasePaneerHalf">−</button>
-                                <span class="qty-display" id="qtyPaneerHalf">0</span>
-                                <button type="button" class="qty-btn" id="increasePaneerHalf">+</button>
-                            </div>
-                        </div>
-                        <div class="plate-header" style="margin-bottom: 0;">
-                            <div class="plate-info">
-                                <div class="plate-name">Full Plate (1kg)</div>
-                                <div class="plate-price">₹200 per plate</div>
-                            </div>
-                            <div class="quantity-control">
-                                <button type="button" class="qty-btn" id="decreasePaneerFull">−</button>
-                                <span class="qty-display" id="qtyPaneerFull">0</span>
-                                <button type="button" class="qty-btn" id="increasePaneerFull">+</button>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Total -->
                     <div class="total-section">
                         <div class="total-label">Total Amount</div>
@@ -779,18 +749,12 @@
         // Quantity Control for Plates
         let qtyChickenHalf = 0;
         let qtyChickenFull = 0;
-        let qtyPaneerHalf = 0;
-        let qtyPaneerFull = 0;
         
         const priceChickenHalf = 150;
         const priceChickenFull = 270;
-        const pricePaneerHalf = 120;
-        const pricePaneerFull = 200;
 
         const qtyChickenHalfDisplay = document.getElementById('qtyChickenHalf');
         const qtyChickenFullDisplay = document.getElementById('qtyChickenFull');
-        const qtyPaneerHalfDisplay = document.getElementById('qtyPaneerHalf');
-        const qtyPaneerFullDisplay = document.getElementById('qtyPaneerFull');
         
         const totalPriceDisplay = document.getElementById('totalPrice');
         
@@ -798,24 +762,15 @@
         const increaseChickenHalfBtn = document.getElementById('increaseChickenHalf');
         const decreaseChickenFullBtn = document.getElementById('decreaseChickenFull');
         const increaseChickenFullBtn = document.getElementById('increaseChickenFull');
-        
-        const decreasePaneerHalfBtn = document.getElementById('decreasePaneerHalf');
-        const increasePaneerHalfBtn = document.getElementById('increasePaneerHalf');
-        const decreasePaneerFullBtn = document.getElementById('decreasePaneerFull');
-        const increasePaneerFullBtn = document.getElementById('increasePaneerFull');
 
         function updateTotalPrice() {
             const total = (qtyChickenHalf * priceChickenHalf) + 
-                          (qtyChickenFull * priceChickenFull) + 
-                          (qtyPaneerHalf * pricePaneerHalf) + 
-                          (qtyPaneerFull * pricePaneerFull);
+                          (qtyChickenFull * priceChickenFull);
             totalPriceDisplay.textContent = `₹${total}`;
             
             // Update button states
             decreaseChickenHalfBtn.disabled = qtyChickenHalf === 0;
             decreaseChickenFullBtn.disabled = qtyChickenFull === 0;
-            decreasePaneerHalfBtn.disabled = qtyPaneerHalf === 0;
-            decreasePaneerFullBtn.disabled = qtyPaneerFull === 0;
         }
 
         // Chicken Half Plate Controls
@@ -845,36 +800,6 @@
         increaseChickenFullBtn.addEventListener('click', () => {
             qtyChickenFull++;
             qtyChickenFullDisplay.textContent = qtyChickenFull;
-            updateTotalPrice();
-        });
-
-        // Paneer Half Plate Controls
-        decreasePaneerHalfBtn.addEventListener('click', () => {
-            if (qtyPaneerHalf > 0) {
-                qtyPaneerHalf--;
-                qtyPaneerHalfDisplay.textContent = qtyPaneerHalf;
-                updateTotalPrice();
-            }
-        });
-
-        increasePaneerHalfBtn.addEventListener('click', () => {
-            qtyPaneerHalf++;
-            qtyPaneerHalfDisplay.textContent = qtyPaneerHalf;
-            updateTotalPrice();
-        });
-
-        // Paneer Full Plate Controls
-        decreasePaneerFullBtn.addEventListener('click', () => {
-            if (qtyPaneerFull > 0) {
-                qtyPaneerFull--;
-                qtyPaneerFullDisplay.textContent = qtyPaneerFull;
-                updateTotalPrice();
-            }
-        });
-
-        increasePaneerFullBtn.addEventListener('click', () => {
-            qtyPaneerFull++;
-            qtyPaneerFullDisplay.textContent = qtyPaneerFull;
             updateTotalPrice();
         });
 
@@ -953,7 +878,7 @@
             const hour = istTime.getHours();
 
             // Closed from 2:00 AM (hour 2) to 6:59 PM (hour 18). Allowed 19:00 - 01:59.
-            if (hour >= 2 && hour < 18) {
+            if (hour >= 2 && hour < 19) {
                 const closedContent = `
                     <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">🕒</p>
                     <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
@@ -971,7 +896,7 @@
             }
 
             // Validate at least one item is selected
-            if (qtyChickenHalf === 0 && qtyChickenFull === 0 && qtyPaneerHalf === 0 && qtyPaneerFull === 0) {
+            if (qtyChickenHalf === 0 && qtyChickenFull === 0) {
                 const warningContent = `
                     <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">⚠️</p>
                     <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
@@ -993,9 +918,7 @@
             const hostel = document.getElementById('hostel').value;
             const fullAddress = document.getElementById('fullAddress').value;
             const totalPrice = (qtyChickenHalf * priceChickenHalf) + 
-                               (qtyChickenFull * priceChickenFull) + 
-                               (qtyPaneerHalf * pricePaneerHalf) + 
-                               (qtyPaneerFull * pricePaneerFull);
+                               (qtyChickenFull * priceChickenFull);
 
             // Determine delivery location
             const deliveryLocation = hostel === 'other' ? fullAddress : hostel;
@@ -1004,8 +927,6 @@
             let orderItemsHTML = '';
             if (qtyChickenHalf > 0) orderItemsHTML += `<p>Chicken Biryani Half Plate × ${qtyChickenHalf} = ₹${qtyChickenHalf * priceChickenHalf}</p>`;
             if (qtyChickenFull > 0) orderItemsHTML += `<p>Chicken Biryani Full Plate × ${qtyChickenFull} = ₹${qtyChickenFull * priceChickenFull}</p>`;
-            if (qtyPaneerHalf > 0) orderItemsHTML += `<p>Paneer Biryani Half Plate × ${qtyPaneerHalf} = ₹${qtyPaneerHalf * pricePaneerHalf}</p>`;
-            if (qtyPaneerFull > 0) orderItemsHTML += `<p>Paneer Biryani Full Plate × ${qtyPaneerFull} = ₹${qtyPaneerFull * pricePaneerFull}</p>`;
 
             const confirmContent = `
                 <p><strong>Name:</strong> ${name}</p>
@@ -1051,9 +972,7 @@
                 const location = hostel === 'other' ? fullAddress : hostel;
 
                 const totalPrice = (qtyChickenHalf * priceChickenHalf) + 
-                                   (qtyChickenFull * priceChickenFull) + 
-                                   (qtyPaneerHalf * pricePaneerHalf) + 
-                                   (qtyPaneerFull * pricePaneerFull);
+                                   (qtyChickenFull * priceChickenFull);
 
                 const orderData = {
                     name: name,
@@ -1061,8 +980,8 @@
                     location: location,
                     chickenHalfQty: qtyChickenHalf,
                     chickenFullQty: qtyChickenFull,
-                    paneerHalfQty: qtyPaneerHalf,
-                    paneerFullQty: qtyPaneerFull,
+                    paneerHalfQty: 0, // Sending 0 to keep your Google Sheet columns aligned
+                    paneerFullQty: 0,
                     total: totalPrice
                 };
 
@@ -1160,8 +1079,6 @@
             const items = [
                 [orderData.chickenHalfQty, 'Chicken Biryani Half Plate', 150],
                 [orderData.chickenFullQty, 'Chicken Biryani Full Plate', 270],
-                [orderData.paneerHalfQty, 'Paneer Biryani Half Plate', 120],
-                [orderData.paneerFullQty, 'Paneer Biryani Full Plate', 200],
             ];
 
             items.forEach(([qty, name, price]) => {
@@ -1214,7 +1131,7 @@
             currentOrderData = {
                 name, phone, location, total: totalPrice,
                 chickenHalfQty: qtyChickenHalf, chickenFullQty: qtyChickenFull,
-                paneerHalfQty: qtyPaneerHalf, paneerFullQty: qtyPaneerFull
+                paneerHalfQty: 0, paneerFullQty: 0 // Padding zeros for sheet
             };
             receiptDownloaded = false; // Reset on new order
 
