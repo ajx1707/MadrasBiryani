@@ -806,7 +806,7 @@
         // Initialize button states
         updateTotalPrice();
 
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRiN9uT5AXva1Y90e4nG6faLb_hnM9qKcxX2CpDF5bq1ANW-H5xesutSjYzY1sZhXC/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbygctr2M1sey-lnvemGzgpM0GucMqVMDSA_1DuYe7iee-Oo_fb8VEhRbN0oTjNLjQPS/exec";
         
         // Check shop status from Google Sheet on page load
         let isShopManuallyClosed = false;
@@ -980,8 +980,6 @@
                     location: location,
                     chickenHalfQty: qtyChickenHalf,
                     chickenFullQty: qtyChickenFull,
-                    paneerHalfQty: 0, // Sending 0 to keep your Google Sheet columns aligned
-                    paneerFullQty: 0,
                     total: totalPrice
                 };
 
@@ -1130,8 +1128,7 @@
             
             currentOrderData = {
                 name, phone, location, total: totalPrice,
-                chickenHalfQty: qtyChickenHalf, chickenFullQty: qtyChickenFull,
-                paneerHalfQty: 0, paneerFullQty: 0 // Padding zeros for sheet
+                chickenHalfQty: qtyChickenHalf, chickenFullQty: qtyChickenFull
             };
             receiptDownloaded = false; // Reset on new order
 
