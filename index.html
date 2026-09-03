@@ -985,33 +985,56 @@
             confirmBtn.classList.add('loading');
             cancelBtn.disabled = true;
 
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const hostel = document.getElementById('hostel').value;
-            const fullAddress = document.getElementById('fullAddress').value;
-
-            const location = hostel === 'other' ? fullAddress : hostel;
-
-            const totalPrice = (qtyChickenHalf * priceChickenHalf) +
-                (qtyChickenFull * priceChickenFull);
-
-            const orderData = {
-                name: name,
-                phone: phone,
-                location: location,
-                chickenHalfQty: qtyChickenHalf,
-                chickenFullQty: qtyChickenFull,
-                total: totalPrice
-            };
-
-            // Use the shared SCRIPT_URL defined earlier
-            fetch(SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify(orderData),
-            })
-                .then(response => response.json())
+            // Re-check shop status before confirming
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
                 .then(data => {
-                    showSuccessModal(totalPrice);
+                    if (data.status && data.status.toString().toUpperCase().trim() === "CLOSED") {
+                        const closedContent = `
+                            <p style="text-align: center; font-size: 48px; margin-bottom: 15px;">🔒</p>
+                            <p style="text-align: center; font-size: 16px; color: #FF6B35; margin-bottom: 15px; font-weight: 500;">
+                                Shop just closed!
+                            </p>
+                            <p style="text-align: center; color: #999;">
+                                We are no longer accepting orders. Please try again later.
+                            </p>
+                        `;
+                        showModal('Shop Closed', closedContent, `<button class="modal-btn modal-btn-ok" onclick="hideModal()" style="width: 100%;">OK</button>`);
+
+                        confirmBtn.disabled = false;
+                        confirmBtn.classList.remove('loading');
+                        cancelBtn.disabled = false;
+                        return;
+                    }
+
+                    // If shop is still open, proceed with order submission
+                    const name = document.getElementById('name').value;
+                    const phone = document.getElementById('phone').value;
+                    const hostel = document.getElementById('hostel').value;
+                    const fullAddress = document.getElementById('fullAddress').value;
+
+                    const location = hostel === 'other' ? fullAddress : hostel;
+
+                    const totalPrice = (qtyChickenHalf * priceChickenHalf) +
+                        (qtyChickenFull * priceChickenFull);
+
+                    const orderData = {
+                        name: name,
+                        phone: phone,
+                        location: location,
+                        chickenHalfQty: qtyChickenHalf,
+                        chickenFullQty: qtyChickenFull,
+                        total: totalPrice
+                    };
+
+                    return fetch(SCRIPT_URL, {
+                        method: "POST",
+                        body: JSON.stringify(orderData),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            showSuccessModal(totalPrice);
+                        });
                 })
                 .catch(error => {
                     // Re-enable buttons on error
