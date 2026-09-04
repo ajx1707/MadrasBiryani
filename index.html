@@ -687,7 +687,7 @@
                             <img src="chicken.png" alt="Chicken Biryani">
                         </div>
                         <div class="plate-title">CHICKEN BIRYANI</div>
-                        <div class="plate-header">
+                        <div class="plate-header" style="margin-bottom: 0;">
                             <div class="plate-info">
                                 <div class="plate-name">Half Plate (500g)</div>
                                 <div class="plate-price">₹150 per plate</div>
@@ -698,18 +698,7 @@
                                 <button type="button" class="qty-btn" id="increaseChickenHalf">+</button>
                             </div>
                         </div>
-                        <div class="plate-header" style="margin-bottom: 0;">
-                            <div class="plate-info">
-                                <div class="plate-name">Full Plate (1kg)</div>
-                                <div class="plate-price">₹230 per plate</div>
-                            </div>
-                            <div class="quantity-control">
-                                <button type="button" class="qty-btn" id="decreaseChickenFull">−</button>
-                                <span class="qty-display" id="qtyChickenFull">0</span>
-                                <button type="button" class="qty-btn" id="increaseChickenFull">+</button>
-                            </div>
-                        </div>
-                        
+
                     </div>
 
                     <!-- Total -->
@@ -770,29 +759,22 @@
 
         // Quantity Control for Plates
         let qtyChickenHalf = 0;
-        let qtyChickenFull = 0;
+        const qtyChickenFull = 0; // Maintained as 0 for App Script compatibility
 
         const priceChickenHalf = 150;
-        const priceChickenFull = 280;
 
         const qtyChickenHalfDisplay = document.getElementById('qtyChickenHalf');
-        const qtyChickenFullDisplay = document.getElementById('qtyChickenFull');
-
         const totalPriceDisplay = document.getElementById('totalPrice');
 
         const decreaseChickenHalfBtn = document.getElementById('decreaseChickenHalf');
         const increaseChickenHalfBtn = document.getElementById('increaseChickenHalf');
-        const decreaseChickenFullBtn = document.getElementById('decreaseChickenFull');
-        const increaseChickenFullBtn = document.getElementById('increaseChickenFull');
 
         function updateTotalPrice() {
-            const total = (qtyChickenHalf * priceChickenHalf) +
-                (qtyChickenFull * priceChickenFull);
+            const total = qtyChickenHalf * priceChickenHalf;
             totalPriceDisplay.textContent = `₹${total}`;
 
             // Update button states
             decreaseChickenHalfBtn.disabled = qtyChickenHalf === 0;
-            decreaseChickenFullBtn.disabled = qtyChickenFull === 0;
         }
 
         // Chicken Half Plate Controls
@@ -807,21 +789,6 @@
         increaseChickenHalfBtn.addEventListener('click', () => {
             qtyChickenHalf++;
             qtyChickenHalfDisplay.textContent = qtyChickenHalf;
-            updateTotalPrice();
-        });
-
-        // Chicken Full Plate Controls
-        decreaseChickenFullBtn.addEventListener('click', () => {
-            if (qtyChickenFull > 0) {
-                qtyChickenFull--;
-                qtyChickenFullDisplay.textContent = qtyChickenFull;
-                updateTotalPrice();
-            }
-        });
-
-        increaseChickenFullBtn.addEventListener('click', () => {
-            qtyChickenFull++;
-            qtyChickenFullDisplay.textContent = qtyChickenFull;
             updateTotalPrice();
         });
 
