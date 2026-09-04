@@ -718,8 +718,6 @@
     </div>
 
     <script>
-        const PRICE_CHICKEN_HALF = 150;
-        const PRICE_CHICKEN_FULL = 280;
         // Modal Functions
         const modalOverlay = document.getElementById('modalOverlay');
         const modalHeader = document.getElementById('modalHeader');
@@ -763,7 +761,8 @@
         let qtyChickenHalf = 0;
         const qtyChickenFull = 0; // Maintained as 0 for App Script compatibility
 
-        const PRICE_CHICKEN_HALF = 150;
+        const priceChickenHalf = 150;
+        const priceChickenFull = 280; // Maintained constant for compatibility
 
         const qtyChickenHalfDisplay = document.getElementById('qtyChickenHalf');
         const totalPriceDisplay = document.getElementById('totalPrice');
@@ -772,7 +771,7 @@
         const increaseChickenHalfBtn = document.getElementById('increaseChickenHalf');
 
         function updateTotalPrice() {
-            const total = qtyChickenHalf * PRICE_CHICKEN_HALF;
+            const total = qtyChickenHalf * priceChickenHalf;
             totalPriceDisplay.textContent = `₹${total}`;
 
             // Update button states
@@ -908,16 +907,16 @@
             const phone = document.getElementById('phone').value;
             const hostel = document.getElementById('hostel').value;
             const fullAddress = document.getElementById('fullAddress').value;
-            const totalPrice = (qtyChickenHalf * PRICE_CHICKEN_HALF) +
-                (qtyChickenFull * PRICE_CHICKEN_FULL);
+            const totalPrice = (qtyChickenHalf * priceChickenHalf) +
+                (qtyChickenFull * priceChickenFull);
 
             // Determine delivery location
             const deliveryLocation = hostel === 'other' ? fullAddress : hostel;
 
             // Build confirmation content
             let orderItemsHTML = '';
-            if (qtyChickenHalf > 0) orderItemsHTML += `<p>Chicken Biryani Half Plate × ${qtyChickenHalf} = ₹${qtyChickenHalf * PRICE_CHICKEN_HALF}</p>`;
-            if (qtyChickenFull > 0) orderItemsHTML += `<p>Chicken Biryani Full Plate × ${qtyChickenFull} = ₹${qtyChickenFull * PRICE_CHICKEN_FULL}</p>`;
+            if (qtyChickenHalf > 0) orderItemsHTML += `<p>Chicken Biryani Half Plate × ${qtyChickenHalf} = ₹${qtyChickenHalf * priceChickenHalf}</p>`;
+            if (qtyChickenFull > 0) orderItemsHTML += `<p>Chicken Biryani Full Plate × ${qtyChickenFull} = ₹${qtyChickenFull * priceChickenFull}</p>`;
 
             const confirmContent = `
                 <p><strong>Name:</strong> ${name}</p>
@@ -985,8 +984,8 @@
 
                     const location = hostel === 'other' ? fullAddress : hostel;
 
-                    const totalPrice = (qtyChickenHalf * PRICE_CHICKEN_HALF) +
-                        (qtyChickenFull * PRICE_CHICKEN_FULL);
+                    const totalPrice = (qtyChickenHalf * priceChickenHalf) +
+                        (qtyChickenFull * priceChickenFull);
 
                     const orderData = {
                         name: name,
